@@ -2,24 +2,28 @@ package c.o.m.demo.entity;
 
 import org.joda.money.Money;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
+import java.util.logging.SimpleFormatter;
 
 public class Employee {
 
-    private long id;
+    private long employeeId;
     private String name;
     private Money salary;
     private Date birthday;
     private Date hireDate;
     private int level;
     private String department;
+    private List<Education> educations;
 
-    public long getId() {
-        return id;
+    public long getEmployeeId() {
+        return employeeId;
     }
 
-    public void setId(long id) {
-        this.id = id;
+    public void setEmployeeId(long employeeId) {
+        this.employeeId = employeeId;
     }
 
     public String getName() {
@@ -68,5 +72,27 @@ public class Employee {
 
     public void setDepartment(String department) {
         this.department = department;
+    }
+
+    public List<Education> getEducations() {
+        return educations;
+    }
+
+    public void setEducations(List<Education> educations) {
+        this.educations = educations;
+    }
+
+    @Override
+    public String toString() {
+        return String.format("Employee{" +
+                "employeeId=" + employeeId +
+                ", name='" + name + '\'' +
+                ", salary=" + salary +
+                ", birthday=" + new SimpleDateFormat("yyyy-MM-dd").format(birthday) +
+                ", hireDate=" + new SimpleDateFormat("yyyy-MM-dd").format(hireDate) +
+                ", level=" + level +
+                ", department='" + department + '\'' +
+                ", educations=" + educations +
+                '}');
     }
 }

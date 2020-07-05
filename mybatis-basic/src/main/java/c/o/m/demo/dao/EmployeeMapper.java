@@ -12,6 +12,10 @@ public interface EmployeeMapper {
 
     Employee selectOne(long id);
 
+    Employee joinSelectOne(long id);
+
+    Employee selectByProperty(Employee employee);
+
     List<Employee> selectAll();
 
     void insertOne(Employee employee);

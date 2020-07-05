@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="c.o.m.demo.dao.EmployeeMapper">
+    <resultMap id="employeeMap" type="c.o.m.demo.entity.Employee">
+        <id property="id" column="ID" jdbcType="BIGINT"/>
+        <result property="name" column="NAME" jdbcType="VARCHAR"/>
+        <result property="salary" column="SALARY" jdbcType="BIGINT"
+                typeHandler="c.o.m.demo.dao.handler.MoneyTypeHandler"/>
+        <result property="birthday" column="BIRTHDAY" javaType="java.util.Date" jdbcType="TIMESTAMP"/>
+        <result property="hireDate" column="HIREDATE" javaType="java.util.Date" jdbcType="TIMESTAMP"/>
+        <result property="level" column="LEVEL" jdbcType="TINYINT"/>
+        <result property="department" column="DEPARTMENT" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <select id="selectOne" parameterType="java.lang.Long" resultMap="employeeMap">
+        SELECT *
+        FROM employee
+        WHERE id = #{id}
+    </select>
+
+    <select id="selectAll" parameterType="java.lang.Long" resultMap="employeeMap">
+        SELECT *
+        FROM employee
+    </select>
+
+    <insert id="insertOne" parameterType="c.o.m.demo.entity.Employee" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO employee (NAME, SALARY, BIRTHDAY, HIREDATE, LEVEL, DEPARTMENT)
+        VALUES (#{name}, #{salary, typeHandler=c.o.m.demo.dao.handler.MoneyTypeHandler},
+                #{birthday, jdbcType=TIMESTAMP}, #{hireDate, jdbcType=TIMESTAMP}, #{level}, #{department});
+    </insert>
+
+    <delete id="deleteOne" parameterType="java.lang.Long">
+        DELETE
+        FROM employee
+        WHERE id = #{id}
+    </delete>
+
+    <update id="updateOne" parameterType="c.o.m.demo.entity.Employee">
+        UPDATE employee
+        SET name = #{name}
+        WHERE id = #{id}
+    </update>
+
+    <!-- 该mapper的namespace下二级缓存配置 -->
+    <cache type="org.apache.ibatis.cache.impl.PerpetualCache"
+           eviction="LRU"
+           flushInterval="60000"
+           size="1024"
+           readOnly="true"
+           blocking="false"
+    />
+</mapper>

@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="c.o.m.demo.dao.EmployeeMapper">
+    <resultMap id="employeeMap" type="c.o.m.demo.entity.Employee">
+        <id property="employeeId" column="EMPLOYEE_ID" jdbcType="BIGINT"/>
+        <result property="name" column="NAME" jdbcType="VARCHAR"/>
+        <result property="salary" column="SALARY" jdbcType="BIGINT" typeHandler="c.o.m.demo.dao.handler.MoneyTypeHandler"/>
+        <result property="birthday" column="BIRTHDAY" javaType="java.util.Date" jdbcType="TIMESTAMP"/>
+        <result property="hireDate" column="HIREDATE" javaType="java.util.Date" jdbcType="TIMESTAMP"/>
+        <result property="level" column="LEVEL" jdbcType="TINYINT"/>
+        <result property="department" column="DEPARTMENT" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <!-- 单个参数，占位符参数与接口方法参数名称相同 -->
+    <select id="selectById" parameterType="java.lang.Long" resultMap="employeeMap">
+        SELECT * FROM employee WHERE EMPLOYEE_ID = #{id}
+    </select>
+
+    <!-- 单个参数，占位符参数与接口方法参数名称特别区别 -->
+    <select id="selectByOtherName" parameterType="java.lang.Long" resultMap="employeeMap">
+        SELECT * FROM employee WHERE EMPLOYEE_ID = #{tag}
+    </select>
+
+    <!-- 多个参数，占位符参数与接口方法参数名称一一对应 -->
+    <select id="selectByMultiName" resultMap="employeeMap">
+        SELECT * FROM employee WHERE EMPLOYEE_ID = #{tag} OR NAME like #{name} OR LEVEL = #{rank}
+    </select>
+
+    <!-- 多个参数，占位符参数与接口方法参数名称特别区别 -->
+    <select id="selectByMultiSameName" resultMap="employeeMap">
+        SELECT * FROM employee WHERE EMPLOYEE_ID = #{cow} OR NAME like #{name} OR LEVEL = #{clazz}
+    </select>
+
+    <!-- 多个参数，占位符参数与接口方法参数名称特别区别 -->
+    <select id="selectByIndex" resultMap="employeeMap">
+        SELECT * FROM employee WHERE EMPLOYEE_ID = #{0} OR NAME like #{1} OR LEVEL = #{2}
+    </select>
+
+    <!-- 多个参数，占位符参数与接口方法参数名称特别区别 -->
+    <select id="selectByParam" resultMap="employeeMap">
+        SELECT * FROM employee WHERE EMPLOYEE_ID = #{param1} OR NAME like #{param2} OR LEVEL = #{param3}
+    </select>
+
+    <!-- 参数为Map对象，key值与占位符参数名称相同 -->
+    <select id="selectByMap" resultMap="employeeMap">
+        SELECT * FROM employee WHERE EMPLOYEE_ID = #{eId} OR NAME like #{eName} OR LEVEL = #{eLevel}
+    </select>
+
+    <!-- 参数为Employee对象 -->
+    <insert id="insertOne" parameterType="c.o.m.demo.entity.Employee" useGeneratedKeys="true" keyProperty="employeeId">
+        INSERT INTO employee (NAME, SALARY, BIRTHDAY, HIREDATE, LEVEL, DEPARTMENT)
+        VALUES (#{name}, #{salary, typeHandler=c.o.m.demo.dao.handler.MoneyTypeHandler},
+                #{birthday, jdbcType=TIMESTAMP}, #{hireDate, jdbcType=TIMESTAMP}, #{level}, #{department});
+    </insert>
+
+
+    <!-- 单个注解参数，占位符参数与接口方法参数名称相同 -->
+    <select id="selectByIdAnnotation" parameterType="java.lang.Long" resultMap="employeeMap">
+        SELECT * FROM employee WHERE EMPLOYEE_ID = #{id}
+    </select>
+    <!-- 单个注解参数，占位符参数与接口方法参数名称不同 -->
+    <select id="selectByCowAnnotation" parameterType="java.lang.Long" resultMap="employeeMap">
+        SELECT * FROM employee WHERE EMPLOYEE_ID = #{cow}
+    </select>
+    <!-- 单个注解参数，占位符参数为param+索引 -->
+    <select id="selectByIdParamAnnotation" parameterType="java.lang.Long" resultMap="employeeMap">
+        SELECT * FROM employee WHERE EMPLOYEE_ID = #{param1}
+    </select>
+
+    <!-- 多个注解参数，占位符参数与接口方法参数名称相同 -->
+    <select id="selectByMultiNameAnnotation" resultMap="employeeMap">
+        SELECT * FROM employee WHERE EMPLOYEE_ID = #{id} OR NAME LIKE #{name}
+    </select>
+    <!-- 多个注解参数，占位符参数为param+索引 -->
+    <select id="selectByMultiNameParamAnnotation" resultMap="employeeMap">
+        SELECT * FROM employee WHERE EMPLOYEE_ID = #{param1} OR NAME LIKE #{param2}
+    </select>
+
+</mapper>

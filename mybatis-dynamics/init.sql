@@ -1,6 +1,4 @@
-CREATE DATABASE IF NOT EXISTS mybatis_parameter;
-
-USE mybatis_cache;
+use demo;
 
 CREATE TABLE employee
 (
